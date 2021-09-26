@@ -1,44 +1,27 @@
 import React from 'react';
+import avatar from '../images/Avatar.png';
 
-function Main() {
-
-
-    function handleEditAvatarClick() {
-        const Popup = document.querySelector('.popup_type_edit-avatar')
-        Popup.classList.add('popup_is-opened');
-    }
-
-    function handleEditProfileClick() {
-        const Popup = document.querySelector('.popup_type_profile')
-        Popup.classList.add('popup_is-opened');
-    }
-
-    function handleAddPlaceClick() {
-        const Popup = document.querySelector('.popup_type_card')
-        Popup.classList.add('popup_is-opened');
-    }
-
-
+function Main(props) {
 
     return (
         <main className="content">
             <section className="profile">
                 <div className="profile__info">
                     <div className="profile__avatar-box">
-                        <img className="profile__avatar" src=" " alt="аватар"/>
+                        <img className="profile__avatar" src={avatar} alt="аватар"/>
                             <div className="profile__avatar-hover">
-                                <button className="profile__edit-avatar-button" type="button" onClick={handleEditAvatarClick}></button>
+                                <button className="profile__edit-avatar-button" type="button" onClick={props.onEditAvatar}></button>
                             </div>
                     </div>
                     <div className="profile__text">
                         <div className="profile__name-edit">
                             <h1 className="profile__name"> Жак-Ив Кусто</h1>
-                            <button className="profile__edit-button page__button" type="button" onClick={handleEditProfileClick}></button>
+                            <button className="profile__edit-button page__button" type="button" onClick={props.onEditProfile}></button>
                         </div>
                         <p className="profile__about">Исследователь океана</p>
                     </div>
                 </div>
-                <button className="profile__add-button page__button" type="button" onClick={handleAddPlaceClick}></button>
+                <button className="profile__add-button page__button" type="button" onClick={props.onAddPlace}></button>
             </section>
 
             <section className="gallery">
