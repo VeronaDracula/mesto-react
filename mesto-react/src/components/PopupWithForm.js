@@ -1,15 +1,10 @@
 import React from 'react';
 
 function PopupWithForm(props) {
-    const Popup = document.querySelector(`.popup_type_${props.name}`)
-
-
-
 
 
     return (
         <>
-
             <section className={props.isOpen ? `popup popup_type_${props.name} popup_is-opened` : `popup popup_type_${props.name}`}>
             <div className="popup__container">
                 <button className="popup__close page__button" onClick={props.onClose}></button>
@@ -27,18 +22,3 @@ function PopupWithForm(props) {
 }
 
 export default PopupWithForm;
-
-//{props.isOpen ? `popup popup_type_${props.name} popup_is-opened` : `popup popup_type_${props.name}`}
-//{props.isClose ? Popup.classList.remove('popup_is-opened'): console.log('gfjhdg')}
-//{props.isOpen ? Popup.classList.add('popup_is-opened'): console.log('gfjhdg')}
-/*
-* if (props.isOpen) {
-        Popup.classList.add('popup_is-opened')
-    }
-
-
-    if (props.isClose) {
-        Popup.classList.remove('popup_is-opened')
-    }
-*
-* */
