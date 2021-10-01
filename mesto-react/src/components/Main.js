@@ -1,6 +1,6 @@
 import React from 'react';
-import avatar from '../images/Avatar.png';
 import {api} from '../utils/Api.js';
+import Card from './Card.js';
 
 function Main(props) {
 
@@ -8,18 +8,32 @@ function Main(props) {
     const [userDescription, setUserDescription] = React.useState();
     const [userAvatar, setUserAvatar] = React.useState();
 
+    const [cards, setCards] = React.useState([]);
+
     React.useEffect(() => {
         api
             .getUserInfoApi()
             .then(userData => {
+                //загрузка данных пользователя на страницу
                 setUserName(userData.name);
                 setUserDescription(userData.about);
                 setUserAvatar(userData.avatar)
-                //загрузка данных пользователя на страницу
             })
             .catch(err => console.log(err))
 
-    });
+
+    }, []);
+
+    React.useEffect(() => {
+        api
+            .getCards()
+            .then(cardsData => {
+                setCards(cardsData)
+            })
+            .catch(err => console.log(err))
+
+    }, []);
+
 
 
 
@@ -48,31 +62,13 @@ function Main(props) {
 
             <section className="gallery">
                 <ul className="cards">
-                    <template className="card-template">
-                        <li className="card">
-                            <img className="card__image" alt=" " src=" "/>
-                                <div className="card__image-info">
-                                    <h2 className="card__title"></h2>
-                                    <div className="card__like-box">
-                                        <button className="card__like" type="button"></button>
-                                        <p className="card__like-amount"></p>
-                                    </div>
-                                </div>
-                        </li>
-                    </template>
-                    <template className="card-template-with-delete">
-                        <li className="card">
-                            <button className="card__delete page__button" type="button"></button>
-                            <img className="card__image" alt=" " src=" "/>
-                                <div className="card__image-info">
-                                    <h2 className="card__title"></h2>
-                                    <div className="card__like-box">
-                                        <button className="card__like" type="button"></button>
-                                        <p className="card__like-amount"></p>
-                                    </div>
-                                </div>
-                        </li>
-                    </template>
+                    {cards.map((card) => <Card card={card}
+                                               name={card.name}
+                                               link={card.link}
+                                               linkes={card.likes.length}
+                                               id={card._id}
+                                               onCardClick={props.onCardClick}/>
+                                               )}
                 </ul>
             </section>
         </main>

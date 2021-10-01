@@ -8,10 +8,11 @@ import ImagePopup from './ImagePopup.js';
 
 
 function App() {
-
+    const emptyCard = {name : '', link: ''};
     const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+    const [selectedCard, setSelectedCard] = React.useState(emptyCard);
 
     function handleEditAvatarClick() {
         setEditAvatarPopupOpen(true);
@@ -25,10 +26,15 @@ function App() {
         setAddPlacePopupOpen(true);
     }
 
+    function handleCardClick(card) {
+        setSelectedCard(card);
+    }
+
     function closeAllPopups() {
         setEditProfilePopupOpen(false);
         setEditAvatarPopupOpen(false);
         setAddPlacePopupOpen(false);
+        setSelectedCard(emptyCard)
     }
 
 
@@ -37,8 +43,15 @@ function App() {
         <div className="page">
             <div className="page__content">
                 <Header/>
-                <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}/>
+                <Main onEditProfile={handleEditProfileClick}
+                      onAddPlace={handleAddPlaceClick}
+                      onEditAvatar={handleEditAvatarClick}
+                      onCardClick={handleCardClick}
+                />
                 <Footer/>
+                <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+
+
                 <PopupWithForm name="profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}
                                children={
                                    <>
