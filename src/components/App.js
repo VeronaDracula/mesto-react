@@ -52,6 +52,7 @@ function App() {
         setSelectedCard(emptyCard)
     }
 
+    //обновление данных пользователя
     function handleUpdateUser(newUserData) {
         api
             .createNewUserInfoApi(newUserData)

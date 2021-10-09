@@ -19,6 +19,7 @@ function Main(props) {
 
     }, []);
 
+    //лайки и дизлайки
     function handleCardLike(card) {
         // Снова проверяем, есть ли уже лайк на этой карточке
         const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -42,6 +43,7 @@ function Main(props) {
         }
     }
 
+    //удаление карточки
     function handleCardDelete(card) {
         api
             .deleteCardApi(card._id)
