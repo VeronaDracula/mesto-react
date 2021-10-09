@@ -19,6 +19,39 @@ function Main(props) {
 
     }, []);
 
+    function handleCardLike(card) {
+        // Снова проверяем, есть ли уже лайк на этой карточке
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+        if (!isLiked) {
+            api
+                .likeApi(card._id,)
+                .then((newCard) => {
+                    setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+                })
+                .catch(err => console.log(err))
+        }
+
+        else {
+            api
+                .deleteLikedApi(card._id)
+                .then((newCard) => {
+                    setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+                })
+                .catch(err => console.log(err))
+        }
+    }
+
+    function handleCardDelete(card) {
+        api
+            .deleteCardApi(card._id)
+            .then(() => {
+                setCards((state) => state.filter(cardData => card._id !== cardData._id))
+            })
+            .catch(err => console.log(err))
+
+    }
+
     return (
         <main className="content">
             <section className="profile">
@@ -45,11 +78,13 @@ function Main(props) {
             <section className="gallery">
                 <ul className="cards">
                     {cards.map((card) => (<Card card={card}
-                                               name={card.name}
-                                               link={card.link}
-                                               likes={card.likes.length}
-                                               key={card._id}
-                                               onCardClick={props.onCardClick}/>)
+                                                name={card.name}
+                                                link={card.link}
+                                                likes={card.likes.length}
+                                                key={card._id}
+                                                onCardClick={props.onCardClick}
+                                                onCardLike={handleCardLike}
+                                                onCardDelete={handleCardDelete}/>)
                                                )}
                 </ul>
             </section>
