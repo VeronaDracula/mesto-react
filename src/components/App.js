@@ -6,6 +6,7 @@ import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
+import EditProfilePopup from './EditProfilePopup.js';
 import ImagePopup from './ImagePopup.js';
 import {api} from "../utils/Api";
 
@@ -51,6 +52,16 @@ function App() {
         setSelectedCard(emptyCard)
     }
 
+    function handleUpdateUser(newUserData) {
+        api
+            .createNewUserInfoApi(newUserData)
+            .then(newUserData => {
+                setCurrentUser(newUserData);
+                closeAllPopups();
+            })
+            .catch(err => console.log(err))
+    }
+
 
   return (
     <div className="App">
@@ -69,25 +80,9 @@ function App() {
 
                     <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
-                    <PopupWithForm name="profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}
-                                   buttonText="Сохранить"
-                                   children={
-                                       <>
-                                           <div className="form__section">
-                                               <label htmlFor="name" className="form__label"></label>
-                                               <input type="text" className="form__item form__item_type_name" id="name"
-                                                      name="name" placeholder="Имя"
-                                                      required minLength="2" maxLength="40"/>
-                                               <span className="form__input-error" id="name-error"></span>
-                                           </div>
-                                           <div className="form__section">
-                                               <label htmlFor="about" className="form__label"></label>
-                                               <input type="text" className="form__item form__item_type_about" id="about" name="about" placeholder="О себе"
-                                                      required minLength="2" maxLength="200"/>
-                                               <span className="form__input-error" id="about-error"></span>
-                                           </div>
-                                       </>
-                                   }/>
+                    <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
+
+
                     <PopupWithForm name="card" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}
                                    buttonText="Создать"
                                    children={
