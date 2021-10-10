@@ -5,7 +5,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
-import PopupWithForm from './PopupWithForm.js';
+import AddPlacePopup from './AddPlacePopup.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import ImagePopup from './ImagePopup.js';
@@ -18,9 +18,10 @@ function App() {
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState(emptyCard);
-
+    const [cards, setCards] = React.useState([]);
     const [currentUser, setCurrentUser] = React.useState([]);
 
+    //получение данных пользователя
     React.useEffect(() => {
         api
             .getUserInfoApi()
@@ -30,6 +31,7 @@ function App() {
             .catch(err => console.log(err))
     }, []);
 
+    //открытие и закрытие попапов
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
     }
@@ -75,6 +77,65 @@ function App() {
             .catch(err => console.log(err))
     }
 
+    //добавление новой карточки
+    function handleAddPlaceSubmit(newCard) {
+        api
+            .createCardApi(newCard)
+            .then(newCard => {
+                setCards([newCard, ...cards]);
+                closeAllPopups();
+            })
+            .catch(err => console.log(err))
+    }
+
+    //запрос данных карточки
+    React.useEffect(() => {
+        api
+            .getCards()
+            .then(cardsData => {
+                setCards(cardsData)
+            })
+            .catch(err => console.log(err))
+
+    }, []);
+
+    //лайки и дизлайки
+    function handleCardLike(card) {
+        // Снова проверяем, есть ли уже лайк на этой карточке
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+        if (!isLiked) {
+            api
+                .likeApi(card._id,)
+                .then((newCard) => {
+                    setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+                })
+                .catch(err => console.log(err))
+        }
+
+        else {
+            api
+                .deleteLikedApi(card._id)
+                .then((newCard) => {
+                    setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+                })
+                .catch(err => console.log(err))
+        }
+    }
+
+    //удаление карточки
+    function handleCardDelete(card) {
+        api
+            .deleteCardApi(card._id)
+            .then(() => {
+                setCards((state) => state.filter(cardData => card._id !== cardData._id))
+            })
+            .catch(err => console.log(err))
+
+    }
+
+
+
 
   return (
     <div className="App">
@@ -87,6 +148,9 @@ function App() {
                           onAddPlace={handleAddPlaceClick}
                           onEditAvatar={handleEditAvatarClick}
                           onCardClick={handleCardClick}
+                          cards={cards}
+                          onCardLike={handleCardLike}
+                          onCardDelete={handleCardDelete}
                     />
 
                     <Footer/>
@@ -97,27 +161,8 @@ function App() {
 
                     <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
 
+                    <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
 
-                    <PopupWithForm name="card" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}
-                                   buttonText="Создать"
-                                   children={
-                                       <>
-                                           <div className="form__section">
-                                               <label htmlFor="photo-name" className="form__label"></label>
-                                               <input type="text" className="form__item form__item_type_photo-name"
-                                                      id="photo-name" name="name"
-                                                      placeholder="Название" required minLength="2" maxLength="30"/>
-                                               <span className="form__input-error" id="photo-name-error"></span>
-                                           </div>
-                                           <div className="form__section">
-                                               <label htmlFor="link" className="form__label"></label>
-                                               <input type="url" className="form__item form__item_type_link" id="link"
-                                                      name="link"
-                                                      placeholder="Ссылка на картинку" required/>
-                                               <span className="form__input-error" id="link-error"></span>
-                                           </div>
-                                       </>
-                                   }/>
                 </div>
             </div>
         </CurrentUserContext.Provider>
