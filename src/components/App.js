@@ -7,6 +7,7 @@ import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarPopup from './EditAvatarPopup.js';
 import ImagePopup from './ImagePopup.js';
 import {api} from "../utils/Api";
 
@@ -63,6 +64,17 @@ function App() {
             .catch(err => console.log(err))
     }
 
+    //обновление аватара пользователя
+    function handleUpdateAvatar(newUserAvatar) {
+        api
+            .createNewUserAvatarApi(newUserAvatar)
+            .then(newUserAvatar => {
+                setCurrentUser(newUserAvatar);
+                closeAllPopups();
+            })
+            .catch(err => console.log(err))
+    }
+
 
   return (
     <div className="App">
@@ -82,6 +94,8 @@ function App() {
                     <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
                     <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
+
+                    <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
 
 
                     <PopupWithForm name="card" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}
@@ -103,17 +117,6 @@ function App() {
                                                <span className="form__input-error" id="link-error"></span>
                                            </div>
                                        </>
-                                   }/>
-                    <PopupWithForm name="edit-avatar" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}
-                                   buttonText="Сохранить"
-                                   children={
-                                       <div className="form__section">
-                                           <label htmlFor="avatar-link" className="form__label"></label>
-                                           <input type="url" className="form__item form__item_type_avatar-link"
-                                                  id="avatar-link" name="avatar"
-                                                  placeholder="Ссылка на картинку" required/>
-                                           <span className="form__input-error" id="avatar-link-error"></span>
-                                       </div>
                                    }/>
                 </div>
             </div>
