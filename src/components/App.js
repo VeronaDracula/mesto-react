@@ -8,6 +8,7 @@ import Footer from './Footer.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
+import PopupDeleteCard from './PopupDeleteCard.js';
 import ImagePopup from './ImagePopup.js';
 import {api} from "../utils/Api";
 
@@ -17,6 +18,7 @@ function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+    const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState(emptyCard);
     const [cards, setCards] = React.useState([]);
     const [currentUser, setCurrentUser] = React.useState([]);
@@ -44,6 +46,10 @@ function App() {
         setIsAddPlacePopupOpen(true);
     }
 
+    function handleDeleteCardClick() {
+        setIsDeleteCardPopupOpen(true);
+    }
+
     function handleCardClick(card) {
         setSelectedCard(card);
     }
@@ -52,6 +58,7 @@ function App() {
         setIsEditProfilePopupOpen(false);
         setIsEditAvatarPopupOpen(false);
         setIsAddPlacePopupOpen(false);
+        setIsDeleteCardPopupOpen(false)
         setSelectedCard(emptyCard)
     }
 
@@ -123,15 +130,22 @@ function App() {
         }
     }
 
-    //удаление карточки
-    function handleCardDelete(card) {
+    //удаление карточки через попап
+    const [deleteCard, setDeleteCard] = React.useState([]);
+
+    //получаем данные карточки, которую надо удалить
+    function cardDataRead(cardDeleteData) {
+        setDeleteCard(cardDeleteData)
+    }
+    //обработчик удаления карточки
+    function handleDeleteCardSubmit(cardDataDelete) {
         api
-            .deleteCardApi(card._id)
+            .deleteCardApi(cardDataDelete._id)
             .then(() => {
-                setCards((state) => state.filter(cardData => card._id !== cardData._id))
+                setCards((state) => state.filter(cardData => cardDataDelete._id !== cardData._id))
+                closeAllPopups();
             })
             .catch(err => console.log(err))
-
     }
 
 
@@ -150,7 +164,8 @@ function App() {
                           onCardClick={handleCardClick}
                           cards={cards}
                           onCardLike={handleCardLike}
-                          onCardDelete={handleCardDelete}
+                          onCardDelete={handleDeleteCardClick}
+                          onCardDataRead={cardDataRead}
                     />
 
                     <Footer/>
@@ -162,6 +177,9 @@ function App() {
                     <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
 
                     <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+
+                    <PopupDeleteCard isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onDeleteCard={handleDeleteCardSubmit}
+                                     onCardDeleteData={deleteCard}/>
 
                 </div>
             </div>

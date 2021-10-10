@@ -33,13 +33,14 @@ function Main(props) {
             <section className="gallery">
                 <ul className="cards">
                     {props.cards.map((card) => (<Card card={card}
-                                                name={card.name}
-                                                link={card.link}
-                                                likes={card.likes.length}
-                                                key={card._id}
-                                                onCardClick={props.onCardClick}
-                                                onCardLike={props.onCardLike}
-                                                onCardDelete={props.onCardDelete}/>)
+                                                      name={card.name}
+                                                      link={card.link}
+                                                      likes={card.likes.length}
+                                                      key={card._id}
+                                                      onCardClick={props.onCardClick}
+                                                      onCardLike={props.onCardLike}
+                                                      onCardDelete={props.onCardDelete}
+                                                      onCardDataRead={props.onCardDataRead}/>)
                                                )}
                 </ul>
             </section>

@@ -23,13 +23,13 @@ function Card(props) {
         props.onCardLike(props.card);
     }
 
-    function handleDeleteClick() {
-        props.onCardDelete(props.card);
+    function cardDataRead() {
+        props.onCardDataRead(props.card);
     }
 
     return (
         <li className="card">
-            <button className={cardDeleteButtonClassName} type="button" onClick={handleDeleteClick}></button>
+            <button className={cardDeleteButtonClassName} type="button" onClick={function(){ props.onCardDelete(); cardDataRead()}}></button>
             <img className="card__image" alt={props.name} src={props.link} onClick={handleClick}/>
             <div className="card__image-info">
                 <h2 className="card__title">{props.name}</h2>
