@@ -21,7 +21,7 @@ function App() {
     const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState(emptyCard);
     const [cards, setCards] = React.useState([]);
-    const [currentUser, setCurrentUser] = React.useState([]);
+    const [currentUser, setCurrentUser] = React.useState({});
 
     //получение данных пользователя
     React.useEffect(() => {
@@ -34,7 +34,7 @@ function App() {
     }, []);
 
     //открытие и закрытие попапов
-    function handleEditAvatarClick() {
+    function handleEditAvatarClick(buttonText) {
         setIsEditAvatarPopupOpen(true);
     }
 
@@ -61,6 +61,20 @@ function App() {
         setIsDeleteCardPopupOpen(false)
         setSelectedCard(emptyCard)
     }
+
+    //закрытие попапа по Esc
+    React.useEffect(() => {
+        const closeByEscape = (e) => {
+            if (e.key === 'Escape') {
+                closeAllPopups();
+            }
+        }
+
+        document.addEventListener('keydown', closeByEscape)
+
+        return () => document.removeEventListener('keydown', closeByEscape)
+    }, [])
+
 
     //обновление данных пользователя
     function handleUpdateUser(newUserData) {
