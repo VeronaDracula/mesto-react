@@ -12,7 +12,7 @@ function PopupDeleteCard(props) {
 
     return (
         <PopupWithForm name="cardDelete" title="Вы уверены?" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit}
-                       buttonText="Да"
+                       buttonText={props.buttonText} buttonDisable={props.buttonDisable}
                        />
     );
 }

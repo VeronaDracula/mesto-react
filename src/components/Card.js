@@ -29,7 +29,7 @@ function Card(props) {
 
     return (
         <li className="card">
-            <button className={cardDeleteButtonClassName} type="button" onClick={function(){ props.onCardDelete(); cardDataRead()}}></button>
+            <button className={cardDeleteButtonClassName} type="button" onClick={function(){ props.onCardDelete(); cardDataRead(); props.onButtonPopupTextRead('Да')}}></button>
             <img className="card__image" alt={props.name} src={props.link} onClick={handleClick}/>
             <div className="card__image-info">
                 <h2 className="card__title">{props.name}</h2>

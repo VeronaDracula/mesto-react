@@ -17,7 +17,7 @@ function EditAvatarPopup(props) {
 
     return (
         <PopupWithForm name="edit-avatar" title="Обновить аватар" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit}
-                       buttonText="Сохранить"
+                       buttonText={props.buttonText} buttonDisable={props.buttonDisable}
                        children={
                            <div className="form__section">
                                <label htmlFor="avatar-link" className="form__label"></label>

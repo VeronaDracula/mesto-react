@@ -35,7 +35,7 @@ function EditProfilePopup(props) {
 
     return (
         <PopupWithForm name="profile" title="Редактировать профиль" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit}
-                       buttonText="Сохранить"
+                       buttonText={props.buttonText} buttonDisable={props.buttonDisable}
                        children={
                            <>
                                <div className="form__section">

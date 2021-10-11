@@ -64,6 +64,7 @@ function App() {
 
     //обновление данных пользователя
     function handleUpdateUser(newUserData) {
+        buttonState(buttonText, true);
         api
             .createNewUserInfoApi(newUserData)
             .then(newUserData => {
@@ -71,10 +72,14 @@ function App() {
                 closeAllPopups();
             })
             .catch(err => console.log(err))
+            .finally(() => {
+                buttonState(buttonText, false)
+            });
     }
 
     //обновление аватара пользователя
     function handleUpdateAvatar(newUserAvatar) {
+        buttonState(buttonText, true);
         api
             .createNewUserAvatarApi(newUserAvatar)
             .then(newUserAvatar => {
@@ -82,10 +87,14 @@ function App() {
                 closeAllPopups();
             })
             .catch(err => console.log(err))
+            .finally(() => {
+                buttonState(buttonText, false)
+            });
     }
 
     //добавление новой карточки
     function handleAddPlaceSubmit(newCard) {
+        buttonState(buttonText, true);
         api
             .createCardApi(newCard)
             .then(newCard => {
@@ -93,6 +102,9 @@ function App() {
                 closeAllPopups();
             })
             .catch(err => console.log(err))
+            .finally(() => {
+                buttonState(buttonText, false)
+            });
     }
 
     //запрос данных карточки
@@ -149,7 +161,26 @@ function App() {
     }
 
 
+    const [buttonText, setButtonText] = React.useState('');
+    const [buttonDisable, setButtonDisable] = React.useState(false);
 
+    //Получаем изначальный текст кнопки
+    function buttonTextRead(buttonText) {
+        setButtonText(buttonText)
+    }
+
+    //Процесс загрузки
+    function buttonState(button, isLoading2) {
+        if(isLoading2) {
+            setButtonText('Сохранение...');
+            setButtonDisable(true);
+        }
+
+        else{
+            setButtonText(button);
+            setButtonDisable(false);
+        }
+    }
 
   return (
     <div className="App">
@@ -166,20 +197,26 @@ function App() {
                           onCardLike={handleCardLike}
                           onCardDelete={handleDeleteCardClick}
                           onCardDataRead={cardDataRead}
+                          onButtonTextRead={buttonTextRead}
                     />
 
                     <Footer/>
 
                     <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
-                    <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
+                    <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}
+                                      buttonText={buttonText} buttonDisable={buttonDisable}/>
 
-                    <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
+                    <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}
+                                     buttonText={buttonText} buttonDisable={buttonDisable}
 
-                    <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+                    />
+
+                    <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}
+                                   buttonText={buttonText} buttonDisable={buttonDisable}/>
 
                     <PopupDeleteCard isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onDeleteCard={handleDeleteCardSubmit}
-                                     onCardDeleteData={deleteCard}/>
+                                     onCardDeleteData={deleteCard} buttonText={buttonText}/>
 
                 </div>
             </div>
