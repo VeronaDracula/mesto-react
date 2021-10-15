@@ -13,9 +13,8 @@
 
 # Инструкция по запуску:
 - Скачать или склонировать репозиторий
-- Установить зависимости при помощи npm - npm i
-- Запустить в development режиме - npm run dev
-- Запустить сборку - npm run build  
+- Установить зависимости при помощи npm - npm install
+- Запустить - npm start
 
 # Ссылка для просмотра:
 https://veronadracula.github.io/mesto-react/
