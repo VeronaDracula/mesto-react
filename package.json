@@ -36,8 +36,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://github.com/VeronaDracula/mesto-react#readme",
   "devDependencies": {
     "gh-pages": "^3.2.3"
-  }
+  },
+  "homepage": "http://VeronaDracula.github.io/mesto-react"
 }
