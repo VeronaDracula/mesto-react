@@ -16,6 +16,6 @@
 - Установить зависимости при помощи npm - npm i
 - Запустить в development режиме - npm run dev
 - Запустить сборку - npm run build  
-- 
+
 # Ссылка для просмотра:
 https://veronadracula.github.io/mesto-react/
